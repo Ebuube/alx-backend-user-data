@@ -4,12 +4,14 @@
 import re
 
 
-def filter_datum(fields=[], replacement='xxx', message='', separator=';'):
+def filter_datum(fields=[], rep='xxx', msg='', sep=';'):
     """Obfuscate sensitive fields in a log line
+    rep: replacment string
+    msg: message to obfuscate
+    sep: separators to use
+    Pattern -> '{field}={val}(optional semicolon)'
     """
-    if not message or len(message) < 1:
-        return ''
     for field in fields:
-        pattern = '(?P<fieldname>{})=(?P<value>.*?)(?:;|$)'.format(field) # '{fieldname}={value}[;]'
-        message = re.sub(pattern, lambda m: f"{m.group('fieldname')}={replacement};", message)
-    return message
+        pattern = '(?P<field>{})=(?P<val>.*?)(?:;|$)'.format(field)
+        msg = re.sub(pattern, lambda m: f"{m.group('field')}={rep}{sep}", msg)
+    return msg
