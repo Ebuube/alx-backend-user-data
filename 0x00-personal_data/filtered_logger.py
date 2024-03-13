@@ -14,6 +14,6 @@ def filter_datum(fields: List[str] = [], redaction: str = 'xxx',
     Pattern -> '{field}={val}(optional semicolon)'
     """
     for field in fields:
-        pattern = '(?P<field>{})=(?P<val>.*?)(?:;|$)'.format(field)
+        pattern = '(?P<field>{})=(?P<val>.*?)(?:{}|$)'.format(field, separator)
         message = re.sub(pattern, lambda m: f"{m.group('field')}={redaction}{separator}", message)
     return message
