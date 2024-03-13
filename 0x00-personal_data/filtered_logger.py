@@ -5,6 +5,7 @@ import re
 from typing import List
 
 
+
 def filter_datum(fields: List[str] = [], redaction: str = 'xxx',
                  message: str = '', separator: str = ';') -> str:
     """Obfuscate sensitive fields in a log line
@@ -15,5 +16,6 @@ def filter_datum(fields: List[str] = [], redaction: str = 'xxx',
     """
     for field in fields:
         pattern = '(?P<field>{})=(?P<val>.*?)(?:{}|$)'.format(field, separator)
-        message = re.sub(pattern, lambda m: f"{m.group('field')}={redaction}{separator}", message)
+        substitute = lambda m:f"{m.group('field')}={redaction}{separator}"
+        message = re.sub(pattern, substitute, message)
     return message
