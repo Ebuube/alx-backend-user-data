@@ -2,9 +2,10 @@
 """Regex-ing
 """
 import re
+from typing import List
 
-
-def filter_datum(fields=[], rep='xxx', msg='', sep=';'):
+def filter_datum(fields: List[str] = [], rep: str = 'xxx', msg: str ='',
+        sep: str =';') -> str:
     """Obfuscate sensitive fields in a log line
     rep: replacment string
     msg: message to obfuscate
