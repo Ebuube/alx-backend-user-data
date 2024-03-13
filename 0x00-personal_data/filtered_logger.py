@@ -2,6 +2,7 @@
 """Regex-ing
 """
 import re
+import logging
 from typing import List
 
 
@@ -24,3 +25,27 @@ def filter_datum(fields: List[str] = [], redaction: str = 'xxx',
         message = re.sub(pattern,
                          lambda m: sub(m, redaction, separator), message)
     return message
+
+
+class RedactingFormatter(logging.Formatter):
+    """Redacting Formatter class
+    """
+    REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name) %(levelname)s %(asctime)-15s: %(message)s"
+    SEPARATOR = ";"
+    FIELDS = []
+
+    def __init__(self, fields: List[str] = []):
+        super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.FIELDS = fields
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Return a log string according to specified format
+        """
+        '''
+        msg = super().format(record=record)
+        msg = str(filter_datum(fields=self.FIELDS,
+            redaction=self.REDACTION, message=msg,
+            separator=self.SEPARATOR))
+        '''
+        print(super().format(record))
