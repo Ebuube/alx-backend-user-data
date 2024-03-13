@@ -5,6 +5,9 @@ import re
 from typing import List
 
 
+def sub(m, redaction, separator):
+    return f"{m.group('field')}={redaction}{separator}"
+
 
 def filter_datum(fields: List[str] = [], redaction: str = 'xxx',
                  message: str = '', separator: str = ';') -> str:
@@ -16,6 +19,6 @@ def filter_datum(fields: List[str] = [], redaction: str = 'xxx',
     """
     for field in fields:
         pattern = '(?P<field>{})=(?P<val>.*?)(?:{}|$)'.format(field, separator)
-        substitute = lambda m:f"{m.group('field')}={redaction}{separator}"
-        message = re.sub(pattern, substitute, message)
+        message = re.sub(pattern,
+                         lambda m: sub(m, redaction, separator), message)
     return message
