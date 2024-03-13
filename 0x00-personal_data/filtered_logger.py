@@ -6,6 +6,8 @@ from typing import List
 
 
 def sub(m, redaction, separator):
+    """Substitute a group of regex matches with redaction
+    """
     return f"{m.group('field')}={redaction}{separator}"
 
 
