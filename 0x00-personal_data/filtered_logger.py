@@ -40,12 +40,9 @@ class RedactingFormatter(logging.Formatter):
         self.FIELDS = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        """Return a log string according to specified format
+        """Return the customized format result
         """
-        '''
-        msg = super().format(record=record)
-        msg = str(filter_datum(fields=self.FIELDS,
-            redaction=self.REDACTION, message=msg,
-            separator=self.SEPARATOR))
-        '''
-        print(super().format(record))
+        msg = super().format(record)   # get original message
+        fmt_msg = filter_datum(fields=self.FIELDS, redaction=self.REDACTION,
+                message=msg, separator=self.SEPARATOR)
+        return fmt_msg
