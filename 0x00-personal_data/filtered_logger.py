@@ -6,7 +6,7 @@ import logging
 from typing import List
 
 # Personally Identifiable Fields
-PII_FIELDS = ('email', 'phone', 'ssn', 'password', 'ip')
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
 def sub(m, redaction, separator):
