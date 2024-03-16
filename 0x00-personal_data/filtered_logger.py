@@ -6,7 +6,7 @@ import logging
 import mysql.connector
 from os import getenv
 from typing import List, Optional
-from mysql.connector.connection inmport MySQLConnection
+from mysql.connector.connection import MySQLConnection
 
 
 # Personally Identifiable Fields
