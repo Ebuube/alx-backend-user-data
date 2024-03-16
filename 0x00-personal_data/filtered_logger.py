@@ -3,7 +3,11 @@
 """
 import re
 import logging
-from typing import List
+import mysql.connector
+from os import getenv
+from typing import List, Optional
+from mysql.connector.connection inmport MySQLConnection
+
 
 # Personally Identifiable Fields
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
@@ -73,3 +77,36 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     return logger
+
+
+def get_db() -> Optional[MySQLConnection]:
+    """Return a connection to database
+    """
+    database = 'holberton'
+    if not getenv('PERSONAL_DATA_DB_HOST'):
+        host = 'localhost'
+    else:
+        host = getenv('PERSONAL_DATA_DB_HOST')
+
+    if not getenv('PERSONAL_DATA_DB_USERNAME'):
+        user = 'root'
+    else:
+        user = getenv('PERSONAL_DATA_DB_USERNAME')
+
+    if not getenv('PERSONAL_DATA_DB_PASSWORD'):
+        password = ''
+    else:
+        password = getenv('PERSONAL_DATA_DB_PASSWORD')
+
+    config = {
+            'host': host, 'user': user, 'password': password,
+            'database': database
+            }
+
+    # Attempt connecting to database using the above credentials
+    try:
+        conn = mysql.connector.connect(**config)
+        return conn
+    except mysql.connector.Error as err:
+        print("Error:", err)
+        return None
