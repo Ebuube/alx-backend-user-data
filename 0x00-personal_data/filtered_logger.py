@@ -82,7 +82,11 @@ def get_logger() -> logging.Logger:
 def get_db() -> MySQLConnection:
     """Return a connection to database
     """
-    database = 'holberton'
+    if not getenv('PERSONAL_DATA_DB_NAME'):
+        database = 'holberton'
+    else:
+        database = getenv('PERSONAL_DATA_DB_NAME')
+
     if not getenv('PERSONAL_DATA_DB_HOST'):
         host = 'localhost'
     else:
