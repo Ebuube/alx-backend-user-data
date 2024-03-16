@@ -105,7 +105,7 @@ def get_db() -> MySQLConnection:
 
     # Attempt connecting to database using the above credentials
     try:
-        conn = mysql.connector.connect(**config)
+        conn = MySQLConnection(**config)
         return conn
     except mysql.connector.Error as err:
         return None
