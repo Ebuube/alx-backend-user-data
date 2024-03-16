@@ -84,9 +84,9 @@ def get_db() -> MySQLConnection:
     """
     port = 3306
     database = getenv('PERSONAL_DATA_DB_NAME')
-    host = getenv('PERSONAL_DATA_DB_HOST', 'localhost'):
-    user = getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    host = getenv('PERSONAL_DATA_DB_HOST', default='localhost')
+    user = getenv('PERSONAL_DATA_DB_USERNAME', default='root')
+    password = getenv('PERSONAL_DATA_DB_PASSWORD', default='')
 
     config = {
             'host': host, 'user': user, 'password': password,
@@ -94,8 +94,5 @@ def get_db() -> MySQLConnection:
             }
 
     # Attempt connecting to database using the above credentials
-    try:
-        conn = mysql.connector.connect(**config)
-        return conn
-    except mysql.connector.Error as err:
-        return None
+    conn = mysql.connector.connect(**config)
+    return conn
