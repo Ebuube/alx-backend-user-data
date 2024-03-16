@@ -108,5 +108,4 @@ def get_db() -> MySQLConnection:
         conn = mysql.connector.connect(**config)
         return conn
     except mysql.connector.Error as err:
-        print("Error:", err)
         return None
