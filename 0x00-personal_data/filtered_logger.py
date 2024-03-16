@@ -83,25 +83,10 @@ def get_db() -> MySQLConnection:
     """Return a connection to database
     """
     port = 3306
-    if not getenv('PERSONAL_DATA_DB_NAME'):
-        database = 'holberton'
-    else:
-        database = getenv('PERSONAL_DATA_DB_NAME')
-
-    if not getenv('PERSONAL_DATA_DB_HOST'):
-        host = 'localhost'
-    else:
-        host = getenv('PERSONAL_DATA_DB_HOST')
-
-    if not getenv('PERSONAL_DATA_DB_USERNAME'):
-        user = 'root'
-    else:
-        user = getenv('PERSONAL_DATA_DB_USERNAME')
-
-    if not getenv('PERSONAL_DATA_DB_PASSWORD'):
-        password = ''
-    else:
-        password = getenv('PERSONAL_DATA_DB_PASSWORD')
+    database = getenv('PERSONAL_DATA_DB_NAME')
+    host = getenv('PERSONAL_DATA_DB_HOST', 'localhost'):
+    user = getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = getenv('PERSONAL_DATA_DB_PASSWORD', '')
 
     config = {
             'host': host, 'user': user, 'password': password,
