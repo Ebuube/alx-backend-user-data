@@ -79,7 +79,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> Optional[MySQLConnection]:
+def get_db() -> MySQLConnection:
     """Return a connection to database
     """
     database = 'holberton'
