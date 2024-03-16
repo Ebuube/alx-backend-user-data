@@ -5,6 +5,9 @@ import re
 import logging
 from typing import List
 
+# Personally Identifiable Fields
+PII_FIELDS = ('email', 'phone', 'ssn', 'password', 'ip')
+
 
 def sub(m, redaction, separator):
     """Substitute a group of regex matches with redaction
@@ -46,3 +49,27 @@ class RedactingFormatter(logging.Formatter):
         record.msg = filter_datum(fields=self.fields, redaction=self.REDACTION,
                                   message=msg, separator=self.SEPARATOR)
         return super().format(record)
+
+
+def get_logger() -> logging.Logger:
+    """Return a logger object
+    Logger name is : user_data
+    """
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+
+    # Formatter
+    formatter = RedactomgFormatter(fields=PII_FIELDS)
+
+    # Stream Handler
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    stream_handler.setFormatter(formatter)
+
+    # use the handler
+    logger.addHandler(stream_handler)
+
+    # Should logger propagate messages to other loggers?
+    logger.propagate = False
+
+    return logger
