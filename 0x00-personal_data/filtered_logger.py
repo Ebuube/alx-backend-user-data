@@ -82,6 +82,7 @@ def get_logger() -> logging.Logger:
 def get_db() -> MySQLConnection:
     """Return a connection to database
     """
+    port = 3306
     if not getenv('PERSONAL_DATA_DB_NAME'):
         database = 'holberton'
     else:
@@ -104,12 +105,12 @@ def get_db() -> MySQLConnection:
 
     config = {
             'host': host, 'user': user, 'password': password,
-            'database': database
+            'database': database, 'port': port
             }
 
     # Attempt connecting to database using the above credentials
     try:
-        conn = MySQLConnection(**config)
+        conn = mysql.connector.connect(**config)
         return conn
     except mysql.connector.Error as err:
         return None
