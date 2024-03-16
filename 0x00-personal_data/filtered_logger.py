@@ -82,12 +82,16 @@ def get_logger() -> logging.Logger:
 def get_db() -> MySQLConnection:
     """Return a connection to database
     """
-    host = getenv('PERSONAL_DATA_DB_HOST', 'localhost')
-    user = getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = getenv('PERSONAL_DATA_DB_PASSWORD', '')
     database = getenv('PERSONAL_DATA_DB_NAME')
-    conn = mysql.connector.connection.MySQLConnection(host=host,
-                                                      user=user,
-                                                      password=password,
-                                                      database=database)
+    host = getenv('PERSONAL_DATA_DB_HOST', default='localhost')
+    user = getenv('PERSONAL_DATA_DB_USERNAME', default='root')
+    password = getenv('PERSONAL_DATA_DB_PASSWORD', default='')
+
+    config = {
+            'host': host, 'user': user, 'password': password,
+            'database': database
+            }
+
+    # Attempt connecting to database using the above credentials
+    conn = MySQLConnection(**config)
     return conn
