@@ -95,3 +95,25 @@ def get_db() -> MySQLConnection:
     # Attempt connecting to database using the above credentials
     conn = MySQLConnection(**config)
     return conn
+
+
+def main() -> None:
+    """Display users in the database
+    """
+    required_fields = "name,email,phone,ssn,password,ip,last_login,user_agent"
+    columns = required_fields.split(',')
+    query = f"SELECT {required_fields} FROM users;"
+    db = get_db()
+    data_logger = get_logger()
+    with db.cursor() as cursor():
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        for row in rows:
+            record = map(
+                    lambda y: "{}={}".format(y[0], y[1]),
+                    zip(columns, row),)
+            message = "{};".format("; ".join(list(record)))
+            args = ("user_data", logging.INFO, None, None, message, None, None)
+            log_record = logging.LogRecord(*args)
+            data_logger.handle(log_record)
+    db.close()
