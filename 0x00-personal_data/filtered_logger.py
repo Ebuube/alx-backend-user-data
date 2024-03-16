@@ -63,7 +63,7 @@ def get_logger() -> logging.Logger:
     logger.setLevel(logging.INFO)
 
     # Formatter
-    formatter = RedactomgFormatter(fields=PII_FIELDS)
+    formatter = RedactingFormatter(fields=PII_FIELDS)
 
     # Stream Handler
     stream_handler = logging.StreamHandler()
@@ -82,7 +82,6 @@ def get_logger() -> logging.Logger:
 def get_db() -> MySQLConnection:
     """Return a connection to database
     """
-    port = 3306
     database = getenv('PERSONAL_DATA_DB_NAME')
     host = getenv('PERSONAL_DATA_DB_HOST', default='localhost')
     user = getenv('PERSONAL_DATA_DB_USERNAME', default='root')
@@ -90,9 +89,9 @@ def get_db() -> MySQLConnection:
 
     config = {
             'host': host, 'user': user, 'password': password,
-            'database': database, 'port': port
+            'database': database
             }
 
     # Attempt connecting to database using the above credentials
-    conn = mysql.connector.connect(**config)
+    conn = MySQLConnection(**config)
     return conn
