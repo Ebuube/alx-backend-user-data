@@ -3,6 +3,8 @@
 """
 import base64
 from api.v1.auth.auth import Auth
+from models.user import User
+from typing import TypeVar
 
 
 class BasicAuth(Auth):
@@ -46,3 +48,20 @@ class BasicAuth(Auth):
         if ':' not in decoded_base_64_authorization_header:
             return (None, None)
         return tuple(decoded_base_64_authorization_header.split(':')[:2])
+
+    def user_object_from_credentials(self,
+            user_email: str, user_pwd: str) -> TypeVar('Uesr'):  # noqa: E502, E128
+        """Return a user instance based on credentials
+        """
+        if user_email is None or type(user_email) is not str:
+            return None
+        if user_pwd is None or type(user_pwd) is not str:
+            return None
+        User.load_from_file()
+        user = User.search(attributes={'email': user_email})
+        if not user:
+            return None
+        user = user[0]
+        if not user.is_valid_password(pwd=user_pwd):
+            return None
+        return user
