@@ -117,3 +117,7 @@ def main() -> None:
             log_record = logging.LogRecord(*args)
             data_logger.handle(log_record)
     db.close()
+
+
+if __name__ == '__main__':
+    main()
