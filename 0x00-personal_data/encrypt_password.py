@@ -4,7 +4,7 @@
 import bcrypt
 
 
-def hash_password(password) -> str:
+def hash_password(password: str) -> bytes:
     """Hash a password before storage
     """
     value_bytes = password.encode('utf-8')
