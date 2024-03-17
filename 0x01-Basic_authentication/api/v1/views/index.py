@@ -31,3 +31,10 @@ def unauthorized() -> str:
     """Test that error 401 is obtained
     """
     abort(401)
+
+
+@app_views.route('/forbidden', strict_slashes=False)
+def forbidden() -> str:
+    """Deny access to forbidden resource
+    """
+    abort(403)
