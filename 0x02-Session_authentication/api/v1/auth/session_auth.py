@@ -2,6 +2,7 @@
 """Session authentication
 """
 from api.v1.auth.auth import Auth
+from models.user import User
 from uuid import uuid4
 
 
@@ -25,3 +26,13 @@ class SessionAuth(Auth):
         if session_id is None or type(session_id) is not str:
             return None
         return self.user_id_by_session_id.get(session_id)
+
+    def current_user(self, request=None):
+        """Return the current user_id based on session cookie
+        """
+        if request is None:
+            return None
+
+        session_id = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_id)
+        return User.get(user_id)
