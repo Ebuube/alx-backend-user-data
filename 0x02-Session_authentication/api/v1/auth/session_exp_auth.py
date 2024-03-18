@@ -13,8 +13,12 @@ class SessionExpAuth(SessionAuth):
         """Set instance attributes
         """
         try:
-            self.session_duration = int(os.getenv('SESSION_DURATION'))
-        except (ValueError, KeyError):
+            duration = os.getenv('SESSION_DURATION')
+            if duration is None or len(duration) == 0:
+                raise ValueError('Session Duration is not set')
+
+            self.session_duration = int(duration)
+        except (TypeError, ValueError, KeyError):
             self.session_duration = 0
 
     def create_session(self, user_id=None):
