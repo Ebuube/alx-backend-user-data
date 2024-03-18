@@ -1,4 +1,4 @@
-#86-027d-44ac-b377-060cd367c1c8!/usr/bin/env python3
+#!/usr/bin/env python3
 """Persisted Authentication
 """
 from api.v1.auth.session_exp_auth import SessionExpAuth
