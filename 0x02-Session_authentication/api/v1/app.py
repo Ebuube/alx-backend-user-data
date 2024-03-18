@@ -31,15 +31,19 @@ def do_auth():
     """
     if auth is None:
         return
+
+    # Excluded paths should end with a forward slash '/' except wildcards
     excluded_paths = [
             '/api/v1/stat*',
             '/api/v1/unauthorized/',
-            '/api/v1/forbidden/'
+            '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/'
         ]
     if not auth.require_auth(request.path, excluded_paths=excluded_paths):
         return
 
-    if auth.authorization_header(request) is None:
+    if auth.authorization_header(request) is None and \
+            auth.session_cookie(request) is None:     # noqa: E502, E128
         abort(401)
 
     if auth.current_user(request) is None:
