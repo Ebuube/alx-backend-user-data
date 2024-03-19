@@ -24,8 +24,11 @@ class SessionDBAuth(SessionExpAuth):
         """
         if session_id is None:
             return None
-        matches = UserSession.search(attributes={'session_id': session_id})
-        if not matches or len(matches) == 0:
+        try:
+            matches = UserSession.search(attributes={'session_id': session_id})
+        except Exception:
+            return None
+        if not matches or len(matches) <= 0:
             return None
         user_session = matches[0]
 
