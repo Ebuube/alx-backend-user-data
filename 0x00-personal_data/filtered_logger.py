@@ -105,7 +105,7 @@ def main() -> None:
     query = f"SELECT {required_fields} FROM users;"
     db = get_db()
     data_logger = get_logger()
-    with db.cursor() as cursor():
+    with db.cursor() as cursor:
         cursor.execute(query)
         rows = cursor.fetchall()
         for row in rows:
