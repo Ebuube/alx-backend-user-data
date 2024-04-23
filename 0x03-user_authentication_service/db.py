@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
@@ -44,10 +44,20 @@ class DB:
         Filter through database and find the first user with the
         specified attributes and values
         """
+        query = self._session.query(User)
+        filters = []
+
+        for key, value in kwargs.items():
+            if hasattr(User, key):
+                filters.append(getattr(User, key) == value)
         try:
-            user = self._session.query(User).filter_by(**kwargs).first()
-            if not user:
-                raise NoResultFound()
+            if filters:
+                query = query.filter(or_(*filters))
+                user = query.first()
+                if not user:
+                    raise NoResultFound
+            else:
+                raise InvalidRequestError
             return user
         except NoResultFound:
             raise
