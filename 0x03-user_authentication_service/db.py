@@ -45,20 +45,10 @@ class DB:
         Filter through database and find the first user with the
         specified attributes and values
         """
-        query = self._session.query(User)
-        filters = []
-
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                filters.append(getattr(User, key) == value)
         try:
-            if filters:
-                query = query.filter(or_(*filters))
-                user = query.first()
-                if not user:
-                    raise NoResultFound
-            else:
-                raise InvalidRequestError
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if not user:
+                raise NoResultFound
             return user
         except NoResultFound:
             raise
