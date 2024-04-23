@@ -24,17 +24,14 @@ def register_users():
         * email: str
         * password: str
     """
-    try:
-        rj = request.get_json()
-    except Exception as e:
-        print(f"Error in getting json: {e}")    # test
-        return jsonify({"Error": "JSON payload missing"}), 400
     required = ['email', 'password']
     for attr in required:
-        if attr not in rj:
+        if attr not in request.form:
             return jsonify({"Error": f"{attr} missing"}), 400
     try:
-        user = AUTH.register_user(rj['email'], rj['password'])
+        user = AUTH.register_user(
+                request.form.get('email'),
+                request.form.get('password'))
     except ValueError as e:
         print(e)
         return jsonify({"message": "email already registered"}), 400
@@ -43,4 +40,4 @@ def register_users():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", port="5000", debug=True)
