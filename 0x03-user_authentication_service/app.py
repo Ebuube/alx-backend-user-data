@@ -2,7 +2,8 @@
 """Minimal Flask app
 """
 from auth import Auth
-from flask import Flask, jsonify, request, abort, make_response
+from flask import (Flask, jsonify, request, abort, make_response,
+                   url_for, redirect)
 
 
 AUTH = Auth()
@@ -55,7 +56,20 @@ def login():
     response.set_cookie("session_id", AUTH.create_session(email))
     return response
 
-    return ''
+
+@app.route("/sessions", methods=["DELETE"])
+def logout():
+    """End current session of this user
+    session_id cookie is expected
+    """
+    session_id = request.cookies.get('session_id')
+    if not session_id:
+        abort(403)
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        abort(403)
+    AUTH.destroy_session(user_id=user.id)
+    return redirect(url_for("home"))
 
 
 if __name__ == "__main__":
