@@ -46,12 +46,6 @@ def login():
         * email: str
         * password: str
     """
-    required = ['email', 'password']
-    for attr in required:
-        if attr not in request.form:
-            print(f"{attr} is missing")     # test
-            abort(401)
-
     email = request.form.get('email')
     password = request.form.get('password')
     if not AUTH.valid_login(email, password):
