@@ -49,7 +49,6 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
     if not AUTH.valid_login(email, password):
-        print("Invalid login credentials")  # test
         abort(401)
 
     response = make_response(jsonify({"email": email, "message": "logged in"}))
