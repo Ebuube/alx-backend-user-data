@@ -61,7 +61,7 @@ class Auth:
         self._db.update_user(user_id=user.id, session_id=session_id)
         return session_id
 
-    def get_use_from_session_id(self, session_id: str) -> str:
+    def get_user_from_session_id(self, session_id: str) -> str:
         """Return user bearing this session id
         """
         if not session_id:
